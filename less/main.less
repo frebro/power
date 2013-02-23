@@ -15,24 +15,28 @@ button,
 input,
 select,
 textarea {
-    color: #222;
+    color: @base02;
+    .transition(~"color 600ms linear");
 }
 
 body {
+    background-color: @base2;
+    .transition(~"background-color 600ms linear");
+
     font-size: 1em;
     line-height: 1.4;
 }
 
 a {
-    color: #00e;
-}
+    color: @violet;
+    .transition(~"color 600ms linear");
 
-a:visited {
-    color: #551a8b;
-}
-
-a:hover {
-    color: #06e;
+    &:visited {
+        color: spin(@violet, 30);
+    }
+    &:hover {
+        color: darken(spin(@violet, 30), 20%);
+    }
 }
 
 /*
@@ -65,9 +69,14 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-#map { width: 640px; height: 480px; }
+body {
+    padding: @rhythmUnit;
+}
 
-
+#map { 
+    width: 640px; 
+....height: 480px;
+}
 
 
 
@@ -85,6 +94,12 @@ textarea {
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+
+/* Content container panel */
+
+.panel {
+    .panel();
+}
 
 /* Prevent callout */
 

@@ -64,9 +64,10 @@ PowerApp.initialize = function()
 	var midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr});
 
 	var map = L.map('map', {
-		center: [56.19524092761848, 14.848571712983098],
-		zoom: 10,
-		layers: [midnight]
+		center: [56.17030,14.86307],
+		zoom: 12,
+		layers: [midnight],
+		scrollWheelZoom: false
 	});
 
 
@@ -77,7 +78,7 @@ PowerApp.initialize = function()
 	    // .lightson .day .time
 		// .lightson .night .time
 
-		var totalWatts = data.watts;
+		var totalWatts = data.watts / 1000;
 	    var maxWatts = data.max;
 	    var minWatts = data.min;
 
@@ -92,13 +93,16 @@ PowerApp.initialize = function()
 		var minSize = 50.0;
 		var maxSize = 100.0;
 
-		var sunrise = data.suncycle.rise;
-		var sunset = data.suncycle.set;
+		var sunrise = new Date(data.suncycle.rise);
+		var sunset =  new Date(data.suncycle.set);
+		var currentTime = new Date();
+
+		var currentUsage = sunrise < currentTime ? totalWatts:0;
 
 
 		$('.lightson .day .time').html(sunrise);
 		$('.lightson .night .time').html(sunset);
-		$('.status .total').html(totalWatts + "w");
+		$('.status .value').html(currentUsage + " kW");
 
 
 		$.each(data.lights, function(i, item) 
@@ -123,6 +127,8 @@ PowerApp.initialize = function()
 		    	stroke: false
 
 			}).addTo(map);
+
+		
 
 		});
 	});

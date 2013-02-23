@@ -1,0 +1,42 @@
+
+.daylight {
+  .panel(mix(@blue, @black, 30%), @base3);
+
+  .legend {
+
+      .clearfix();
+
+      // Huge icons
+      [class^="icon-"] {
+          font-size: 100px;
+      }
+
+      // Day symbol
+      .day {
+          .gradient(~"linear-gradient(top, #ffda4a 0%, #ff7a41 100%)");
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+
+          float: left;
+
+          // use icon-certificate
+          [class^="icon-"]:after {
+            content: "\f0a3";
+          }
+      }
+
+      // Night symbol
+      .night {
+          .gradient(~"linear-gradient(top, #48aff6 0%, #8187ea 100%)");
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+
+          float: right;
+
+          // use icon-star
+          [class^="icon-"]:after {
+              content: "\f005";
+          }
+      }
+  }
+}

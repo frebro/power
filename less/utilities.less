@@ -1,0 +1,106 @@
+
+// Color classes
+.base03 { background: @base03; color: @base3; }
+.base02 { background: @base02; color: @base2; }
+.base01 { background: @base01; color: @base1; }
+.base00 { background: @base00; color: @base0; }
+.base0 { background: @base0; color: @base00; }
+.base1 { background: @base1; color: @base01; }
+.base2 { background: @base2; color: @base02; }
+.base3 { background: @base3; color: @base03; }
+
+.black { background: @black; color: @white; }
+.white { background: @white; color: @black; }
+.yellow { background: @yellow; color: @white; }
+.orange { background: @orange; color: @white; }
+.red { background: @red; color: @white; }
+.magenta { background: @magenta; color: @white; }
+.violet { background: @violet; color: @white; }
+.blue { background: @blue; color: @white; }
+.cyan { background: @cyan; color: @white; }
+.green { background: @green; color: @white; }
+
+// Swatch design samples
+.swatch {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+}
+
+// Clearing floats like a boss h5bp.com/q
+.clearfix() {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.panel() {
+  background-color: @base3;
+  .border-radius(@baseBorderRadius);
+  .box-shadow(~"0 1px 3px rgba(0,0,0,.1)");
+
+  position: relative;
+  padding: @rhythmUnit;
+  margin-bottom: @rhythmUnit;
+
+  .title {
+    border-bottom: 1px solid @base2;
+    color: @base1;
+
+    margin-bottom: @rhythmUnit;
+  }
+
+  .function {
+    color: rgba(255,255,255,.6);
+
+    height: 32px;
+    width: 32px;
+
+    font-size: 14px;
+    text-decoration: none;
+
+    &.primary {
+      .gradient(~"linear-gradient(45deg, transparent 0%, transparent 50%, #8187ea 50%, #8187ea 100%)");
+      .border-top-right-radius(@baseBorderRadius);
+
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      text-align: right;
+
+      i {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+      }
+    }
+
+    &.secondary {
+      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, #ff76b9 50%, #ff76b9 100%)");
+      .border-bottom-right-radius(@baseBorderRadius);
+
+      position: absolute;
+      bottom: 0;
+      right: 0;
+
+      text-align: right;
+      vertical-align: bottom;
+
+      i {
+        position: absolute;
+        bottom: 3px;
+        right: 3px;
+      }
+    }
+  }
+}

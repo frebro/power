@@ -16,9 +16,13 @@ input,
 select,
 textarea {
     color: @base02;
+    .transition(~"color 600ms linear");
 }
 
 body {
+    background-color: @base2;
+    .transition(~"background-color 600ms linear");
+
     font-size: 1em;
     line-height: 1.4;
 }
@@ -64,10 +68,6 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
-body {
-    background-color: @base2;
-}
 
 
 

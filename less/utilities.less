@@ -48,6 +48,7 @@
   .border-radius(@baseBorderRadius);
   .box-shadow(~"0 1px 3px rgba(0,0,0,.1)");
 
+  position: relative;
   padding: @rhythmUnit;
   margin-bottom: @rhythmUnit;
 
@@ -56,5 +57,48 @@
     color: @base1;
 
     margin-bottom: @rhythmUnit;
+  }
+
+  .function {
+    color: rgba(255,255,255,.6);
+
+    height: 32px;
+    width: 32px;
+
+    font-size: 14px;
+    text-decoration: none;
+
+    &.primary {
+      .gradient(~"linear-gradient(45deg, transparent 0%, transparent 50%, #8187ea 50%, #8187ea 100%)");
+
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      text-align: right;
+
+      i {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+      }
+    }
+
+    &.secondary {
+      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, #ff76b9 50%, #ff76b9 100%)");
+
+      position: absolute;
+      bottom: 0;
+      right: 0;
+
+      text-align: right;
+      vertical-align: bottom;
+
+      i {
+        position: absolute;
+        bottom: 3px;
+        right: 3px;
+      }
+    }
   }
 }

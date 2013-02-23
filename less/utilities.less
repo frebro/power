@@ -1,0 +1,44 @@
+
+// Color classes
+.base03 { background: @base03; color: @base3; }
+.base02 { background: @base02; color: @base2; }
+.base01 { background: @base01; color: @base1; }
+.base00 { background: @base00; color: @base0; }
+.base0 { background: @base0; color: @base00; }
+.base1 { background: @base1; color: @base01; }
+.base2 { background: @base2; color: @base02; }
+.base3 { background: @base3; color: @base03; }
+
+.black { background: @black; color: @white; }
+.white { background: @white; color: @black; }
+.yellow { background: @yellow; color: @white; }
+.orange { background: @orange; color: @white; }
+.red { background: @red; color: @white; }
+.magenta { background: @magenta; color: @white; }
+.violet { background: @violet; color: @white; }
+.blue { background: @blue; color: @white; }
+.cyan { background: @cyan; color: @white; }
+.green { background: @green; color: @white; }
+
+// Swatch design samples
+.swatch {
+  display: inline-block;
+  height: 100px;
+  width: 100px;
+}
+
+// Clearing floats like a boss h5bp.com/q
+.clearfix() {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}

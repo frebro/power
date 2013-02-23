@@ -128,7 +128,7 @@ PowerApp.initialize = function()
 
 			}).addTo(map);
 
-		
+			circle.bindPopup("<b>Lightpole</b></br>Watts: " + item.effect + " watt");
 
 		});
 	});

@@ -59,14 +59,14 @@
 
 // 3D flip
 .lightson {
-  -webkit-perspective: 1000;
+  -webkit-perspective: 800;
 }
 .flipcard {
   position: relative;
   height: 240px;
 
   -webkit-transform-style: preserve-3d;
-  -webkit-transition: all 800ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
 
   &:hover,
   &:active {
@@ -84,7 +84,8 @@
     -webkit-backface-visibility: hidden;
   }
 
-  .night {
+  // day hidden by default
+  .day {
     -webkit-transform: rotateY(180deg);
   }
 

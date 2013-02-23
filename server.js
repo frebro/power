@@ -12,6 +12,8 @@ console.log("Server has started.");
 
 //http://194.116.110.159:8280/geoserver/Belysning/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Belysning:Karlshamn_belysning_armaturer_SWEREF_point&maxFeatures=50&outputFormat=json
 
+var lights = [];
+
 var options = {
     host: '194.116.110.159',
     port: 8280,
@@ -28,8 +30,19 @@ var req = http.request(options, function(res) {
     });
 
     res.on('end', function() {
+
+        var light = {};
         var result = JSON.parse(data);
-        console.log( result.features[0].geometry );
+        for(var i=0; i<result.features.length; i++){
+            light.coordinates = result.features[i].geometry;
+            light.plugged_in = result.features[i].properties.URKOPPLAD;
+            light.effect = result.features[i].properties.EFFEKT_W;
+
+            lights.push(light);
+        }
+
+        
+        console.log(lights);
     });
     
     //console.log(data);

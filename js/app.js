@@ -69,11 +69,6 @@ PowerApp.initialize = function()
 	});
 
 
-	
-
-
-
-
 	$.getJSON('http://194.47.156.33:8888/lights', function(data) 
 	{
 	    var items = [];
@@ -81,10 +76,6 @@ PowerApp.initialize = function()
 		var totalWatts = data.watts;
 	    var maxWatts = data.max;
 	    var minWatts = data.min;
-
-		console.log(totalWatts);
-		console.log(maxWatts);
-		console.log(minWatts);
 
 		var minColorRed = 255.0;
 		var minColorGreen = 255.0;
@@ -97,8 +88,6 @@ PowerApp.initialize = function()
 		var minSize = 50.0;
 		var maxSize = 100.0;
 
-
- 
 		$.each(data.lights, function(i, item) 
 		{
 			var opacity = (item.effect - minWatts)/maxWatts;
@@ -110,35 +99,20 @@ PowerApp.initialize = function()
 			var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
 			var currentSize =  minSize * startRatio + maxSize * endRatio;
 
-			console.log("Start ratio: " + startRatio);
-			console.log("End ratio: " + endRatio);
-			console.log("currentRed: " + currentRed);
-			console.log("currentGreen: " + currentGreen);
-			console.log("currentBlue: " + currentBlue);
-
 			var color = rgb2hex(currentRed, currentGreen, currentBlue);
 			console.log("Hex: " + color);
 
-
-
-			//var marker = L.marker([item.coordinates.x, item.coordinates.y]).addTo(map);
 			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize, 
 			{
 		    	color: 'red',
 		    	fillColor: color,
-		    	fillOpacity: 0.15,
+		    	fillOpacity: 0.45 * opacity,
 		    	stroke: false
 
 			}).addTo(map);
 
 		});
 	});
-
-
-	// var marker = L.marker([56.19524092761848, 14.848571712983098]).addTo(map);
-	// marker.bindPopup("<b>Standard light pole</b></br>Plugged in: true</br>Effect: 120 W</br>").openPopup();
-
-
 };		
 
 PowerApp.draw = function(interpolation) 

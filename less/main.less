@@ -24,6 +24,8 @@ body {
     .transition(~"background-color 600ms linear");
 
     font-size: 1em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
     line-height: 1.4;
 }
 
@@ -73,6 +75,10 @@ body {
     padding: @rhythmUnit;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
 .main {
     .panel();
 }
@@ -102,6 +108,14 @@ body {
 
 .panel {
     .panel();
+}
+
+/* Day and night icons */
+.icon-day {
+    &:after {
+        // use .icon-certificate
+        content: "\f0a3";
+    }
 }
 
 /* Prevent callout */

@@ -56,6 +56,7 @@ PowerApp.initialize = function()
 	var items = [];
 
 
+
     var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 		cmUrl = 'http://{s}.tile.cloudmade.com/cb142de991d9407c9def8ba0df56ab80/{styleId}/256/{z}/{x}/{y}.png';
 
@@ -73,6 +74,9 @@ PowerApp.initialize = function()
 	{
 	    var items = [];
 
+	    // .lightson .day .time
+		// .lightson .night .time
+
 		var totalWatts = data.watts;
 	    var maxWatts = data.max;
 	    var minWatts = data.min;
@@ -88,6 +92,15 @@ PowerApp.initialize = function()
 		var minSize = 50.0;
 		var maxSize = 100.0;
 
+		var sunrise = data.suncycle.rise;
+		var sunset = data.suncycle.set;
+
+
+		$('.lightson .day .time').html(sunrise);
+		$('.lightson .night .time').html(sunset);
+		$('.status .total').html(totalWatts + "w");
+
+
 		$.each(data.lights, function(i, item) 
 		{
 			var opacity = (item.effect - minWatts)/maxWatts;
@@ -100,7 +113,7 @@ PowerApp.initialize = function()
 			var currentSize =  minSize * startRatio + maxSize * endRatio;
 
 			var color = rgb2hex(currentRed, currentGreen, currentBlue);
-			console.log("Hex: " + color);
+		
 
 			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize, 
 			{

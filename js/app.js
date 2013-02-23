@@ -1,47 +1,142 @@
 var PowerApp = {};
-PowerApp.fps = 15;
+// PowerApp.fps = 15;
 
-function Rect(entity) 
-{
-  this.x = Math.floor(Math.random() * (640 - 30));;
-  this.y = Math.floor(Math.random() * (480 - 30));;
-  this.velocity = Math.random() > 0.5 ? -1 : 1;
+// function Rect(entity) 
+// {
+//   this.x = Math.floor(Math.random() * (640 - 30));;
+//   this.y = Math.floor(Math.random() * (480 - 30));;
+//   this.velocity = Math.random() > 0.5 ? -1 : 1;
  
-};
+// };
 
-Rect.prototype.draw = function(context) 
-{
-  //context.fillRect(this.x, this.y, 30, 30);
-};
+// Rect.prototype.draw = function(context) 
+// {
+//   //context.fillRect(this.x, this.y, 30, 30);
+// };
 
-Rect.prototype.update = function() 
-{
-  if (this.y < 0) {
-    this.velocity = 1;
-  } else if (this.y > 450) {
-    this.velocity = -1;
-  }
+// Rect.prototype.update = function() 
+// {
+//   if (this.y < 0) {
+//     this.velocity = 1;
+//   } else if (this.y > 450) {
+//     this.velocity = -1;
+//   }
   
-  this.y += this.velocity;
+//   this.y += this.velocity;
 
-  //this.Entity.style.left = this.x;
-  //this.Entity.top = this.y;
+//   //this.Entity.style.left = this.x;
+//   //this.Entity.top = this.y;
 
-  console.log(this.HTMLElementy);
-//  this.HTMLElement.style.left = 0;
+//   console.log(this.HTMLElementy);
+// //  this.HTMLElement.style.left = 0;
  	
 
-  console.log('Entity update - Element id')
-};
+//   console.log('Entity update - Element id')
+// };
 
+function hexstr(number) {
+    var chars = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+    var low = number & 0xf;
+    var high = (number >> 4) & 0xf;
+    return "" + chars[high] + chars[low];
+}
+
+function rgb2hex(r, g, b) {
+    return "#" + hexstr(r) + hexstr(g) + hexstr(b);
+}
 
 PowerApp.initialize = function() 
 {
 	this.MouseX = 0;
 	this.MouseY = 0;
 
-	this.entities = [];
+	// this.entities = [];
 	console.log("PowerApp:Initialize");
+
+	var items = [];
+
+
+    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+		cmUrl = 'http://{s}.tile.cloudmade.com/cb142de991d9407c9def8ba0df56ab80/{styleId}/256/{z}/{x}/{y}.png';
+
+ 
+	var midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr});
+
+	var map = L.map('map', {
+		center: [56.19524092761848, 14.848571712983098],
+		zoom: 10,
+		layers: [midnight]
+	});
+
+
+	
+
+
+
+
+	$.getJSON('http://194.47.156.33:8888/lights', function(data) 
+	{
+	    var items = [];
+
+		var totalWatts = data.watts;
+	    var maxWatts = data.max;
+	    var minWatts = data.min;
+
+		console.log(totalWatts);
+		console.log(maxWatts);
+		console.log(minWatts);
+
+		var minColorRed = 255.0;
+		var minColorGreen = 255.0;
+		var minColorBlue = 0.0;
+
+		var maxColorRed = 255.0;
+		var maxColorGreen = 0.0;
+		var maxColorBlue = 0.0;
+
+		var minSize = 50.0;
+		var maxSize = 100.0;
+
+
+ 
+		$.each(data.lights, function(i, item) 
+		{
+			var opacity = (item.effect - minWatts)/maxWatts;
+			var startRatio = (1.0 - opacity);
+			var endRatio = opacity;
+
+			var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
+			var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;
+			var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
+			var currentSize =  minSize * startRatio + maxSize * endRatio;
+
+			console.log("Start ratio: " + startRatio);
+			console.log("End ratio: " + endRatio);
+			console.log("currentRed: " + currentRed);
+			console.log("currentGreen: " + currentGreen);
+			console.log("currentBlue: " + currentBlue);
+
+			var color = rgb2hex(currentRed, currentGreen, currentBlue);
+			console.log("Hex: " + color);
+
+
+
+			//var marker = L.marker([item.coordinates.x, item.coordinates.y]).addTo(map);
+			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize, 
+			{
+		    	color: 'red',
+		    	fillColor: color,
+		    	fillOpacity: 0.15,
+		    	stroke: false
+
+			}).addTo(map);
+
+		});
+	});
+
+
+	// var marker = L.marker([56.19524092761848, 14.848571712983098]).addTo(map);
+	// marker.bindPopup("<b>Standard light pole</b></br>Plugged in: true</br>Effect: 120 W</br>").openPopup();
 
 
 };		
@@ -115,40 +210,27 @@ PowerApp.run = (function()
 	
 })();
 
+PowerApp.parseJSON = function(jsonData) 
+{	
+	var items = [];
+	 
+	$.each(data, function(key, val) {
+	items.push('<li id="' + key + '">' + val + '</li>');
+	});
 
+	$('<ul/>', {
+	'class': 'my-new-list',
+	html: items.join('')
+	}).appendTo('body');
+}
 
 $(document).ready(function()
 {
 	console.log("Start");
 	
-
-	// $('#start').click(function()
-	// {
-	// 	Game.isRunning = true;
-	// 	console.log('Start clicked!' + Game.isRunning)
-	// });
-
-	// $('#stop').click(function()
-	// {
-	// 	Game.isRunning = false;
-	// 	console.log('Stop clicked!' + Game.isRunning)
-	// });
-
 	
 
-	var map = L.map('map').setView([56.19524092761848, 14.848571712983098], 13);
-	
-	L.tileLayer('http://{s}.tile.cloudmade.com/cb142de991d9407c9def8ba0df56ab80/997/256/{z}/{x}/{y}.png', 
-	{
-	    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-	    maxZoom: 18
-	}).addTo(map);
-
-
-	var marker = L.marker([56.19524092761848, 14.848571712983098]).addTo(map);
-	marker.bindPopup("<b>Standard light pole</b></br>Plugged in: true</br>Effect: 120 W</br>").openPopup();
-
- //    PowerApp.initialize();
+     PowerApp.initialize();
      
 	// var onEachFrame = function(cb) 
 	// {
@@ -158,3 +240,4 @@ $(document).ready(function()
 
  //    window.onEachFrame(PowerApp.run);
 });
+

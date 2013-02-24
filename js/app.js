@@ -1,27 +1,27 @@
 var PowerApp = {};
 // PowerApp.fps = 15;
 
-// function Rect(entity) 
+// function Rect(entity)
 // {
 //   this.x = Math.floor(Math.random() * (640 - 30));;
 //   this.y = Math.floor(Math.random() * (480 - 30));;
 //   this.velocity = Math.random() > 0.5 ? -1 : 1;
- 
+
 // };
 
-// Rect.prototype.draw = function(context) 
+// Rect.prototype.draw = function(context)
 // {
 //   //context.fillRect(this.x, this.y, 30, 30);
 // };
 
-// Rect.prototype.update = function() 
+// Rect.prototype.update = function()
 // {
 //   if (this.y < 0) {
 //     this.velocity = 1;
 //   } else if (this.y > 450) {
 //     this.velocity = -1;
 //   }
-  
+
 //   this.y += this.velocity;
 
 //   //this.Entity.style.left = this.x;
@@ -29,7 +29,7 @@ var PowerApp = {};
 
 //   console.log(this.HTMLElementy);
 // //  this.HTMLElement.style.left = 0;
- 	
+
 
 //   console.log('Entity update - Element id')
 // };
@@ -45,7 +45,7 @@ function rgb2hex(r, g, b) {
     return "#" + hexstr(r) + hexstr(g) + hexstr(b);
 }
 
-PowerApp.initialize = function() 
+PowerApp.initialize = function()
 {
 	this.MouseX = 0;
 	this.MouseY = 0;
@@ -60,7 +60,7 @@ PowerApp.initialize = function()
     var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 		cmUrl = 'http://{s}.tile.cloudmade.com/cb142de991d9407c9def8ba0df56ab80/{styleId}/256/{z}/{x}/{y}.png';
 
- 
+
 	var midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr});
 
 	var map = L.map('map', {
@@ -71,7 +71,7 @@ PowerApp.initialize = function()
 	});
 
 
-	$.getJSON('http://194.47.156.33:8888/lights', function(data) 
+	$.getJSON('http://194.47.156.33:8888/lights', function(data)
 	{
 	    var items = [];
 
@@ -100,12 +100,12 @@ PowerApp.initialize = function()
 		var currentUsage = sunrise < currentTime ? totalWatts:0;
 
 
-		$('.lightson .day .time').html(sunrise);
-		$('.lightson .night .time').html(sunset);
+		$('.onoff .off .time').html(sunrise);
+		$('.onoff .on .time').html(sunset);
 		$('.status .value').html(currentUsage + " kW");
 
 
-		$.each(data.lights, function(i, item) 
+		$.each(data.lights, function(i, item)
 		{
 			var opacity = (item.effect - minWatts)/maxWatts;
 			var startRatio = (1.0 - opacity);
@@ -117,9 +117,9 @@ PowerApp.initialize = function()
 			var currentSize =  minSize * startRatio + maxSize * endRatio;
 
 			var color = rgb2hex(currentRed, currentGreen, currentBlue);
-		
 
-			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize, 
+
+			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize,
 			{
 		    	color: 'red',
 		    	fillColor: color,
@@ -132,24 +132,24 @@ PowerApp.initialize = function()
 
 		});
 	});
-};		
+};
 
-PowerApp.draw = function(interpolation) 
+PowerApp.draw = function(interpolation)
 {
 	console.log('PowerApp:Draw - ' + interpolation);
 
 };
 
-PowerApp.update = function() 
+PowerApp.update = function()
 {
 	console.log('PowerApp:Update - ' + this.context + this.MouseX + ',' + this.MouseY);
-	for (var i=0; i < this.entities.length; i++) 
+	for (var i=0; i < this.entities.length; i++)
 	{
     	this.entities[i].update();
 	}
 };
 
-PowerApp.addEntity = function(entity) 
+PowerApp.addEntity = function(entity)
 {
  	var rect = new Rect();
  	rect.HTMLElement = entity;
@@ -162,7 +162,7 @@ PowerApp.addEntity = function(entity)
     top: '+=50',
    // width: ['toggle', 'swing'],
     //height:['toggle', 'swing']
-  }, 1000, function() 
+  }, 1000, function()
   {
     // Animation complete.
   });
@@ -171,8 +171,8 @@ PowerApp.addEntity = function(entity)
 
 
 
-PowerApp.run = (function() 
-{	
+PowerApp.run = (function()
+{
 
 	var loops = 0;
 	var skipTicks = 1000 / PowerApp.fps;
@@ -180,33 +180,33 @@ PowerApp.run = (function()
 	var nextGameTick = (new Date).getTime();
 	var lastGameTick;
 
-	return function() 
+	return function()
 	{
 		loops = 0;
 
-		while ((new Date).getTime() > nextGameTick) 
+		while ((new Date).getTime() > nextGameTick)
 		{
 			PowerApp.update();
 		    nextGameTick += skipTicks;
 			loops++;
 		}
 
-	    if (!loops) 
+	    if (!loops)
 	    {
 	      PowerApp.draw((nextGameTick - (new Date).getTime()) / skipTicks);
-	    } 
-	    else 
+	    }
+	    else
 	    {
 	      PowerApp.draw(0);
 	    }
 	};
-	
+
 })();
 
-PowerApp.parseJSON = function(jsonData) 
-{	
+PowerApp.parseJSON = function(jsonData)
+{
 	var items = [];
-	 
+
 	$.each(data, function(key, val) {
 	items.push('<li id="' + key + '">' + val + '</li>');
 	});
@@ -220,15 +220,15 @@ PowerApp.parseJSON = function(jsonData)
 $(document).ready(function()
 {
 	console.log("Start");
-	
-	
+
+
 
      PowerApp.initialize();
-     
-	// var onEachFrame = function(cb) 
+
+	// var onEachFrame = function(cb)
 	// {
 	// 	setInterval(cb, 1000 / PowerApp.fps);
-	// }       
+	// }
 	// window.onEachFrame = onEachFrame;
 
  //    window.onEachFrame(PowerApp.run);

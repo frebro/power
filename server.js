@@ -46,8 +46,9 @@ function onRequest(request, response) {
 }
 
 app.configure(function(){
-    app.use('/', express.static(__dirname + '/'));
-    app.use('/css', express.static(__dirname + '/css'));
+    app.use('/public', express.static(__dirname + '/public'));
+    app.use('/js', express.static(__dirname + '/public/js'));
+    app.use('/css', express.static(__dirname + '/public/css'));
 });
 
 app.all('/*', function(req, res, next) {

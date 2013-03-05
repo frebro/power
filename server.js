@@ -87,7 +87,7 @@ new cronJob('*/2 * * * *', function(){
     getSunCycle();
     getElectricityCost();
 
-}, null, true);
+}, null, true, 1);
 
 
 

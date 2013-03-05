@@ -70,46 +70,55 @@ PowerApp.initialize = function()
 		scrollWheelZoom: false
 	});
 
+	$.getJSON('http://194.116.110.159:8888/currentUsage', function(data){
+		//console.log(data);
+		var totalWatts = (data.usage.totalwatts / 1000000);
+    var maxWatts = data.usage.max;
+    var minWatts = data.usage.min;
 
-	$.getJSON('http://194.47.156.33:8888/lights', function(data)
+    var costUnit = data.cost.unit;
+    var costValue = data.cost.value;
+    var totalCost = costValue*totalWatts;
+
+		var sunrise = new Date(data.suncycle.rise);
+		var sunset =  new Date(data.suncycle.set);
+		var currentTime = new Date();
+
+		var currentUsage = sunrise < currentTime ? totalCost:0;
+
+
+		$('.onoff .off .time').html(sunrise);
+		$('.onoff .on .time').html(sunset);
+		$('.status .value').html(currentUsage + " "+costUnit);
+	});
+
+
+	$.getJSON('http://194.116.110.159:8888/lights', function(data)
 	{
 	    var items = [];
 
 	    // .lightson .day .time
 		// .lightson .night .time
 
-		var totalWatts = data.watts / 1000;
-	    var maxWatts = data.max;
-	    var minWatts = data.min;
-
-		var minColorRed = 255.0;
-		var minColorGreen = 255.0;
-		var minColorBlue = 0.0;
-
-		var maxColorRed = 255.0;
-		var maxColorGreen = 0.0;
-		var maxColorBlue = 0.0;
-
-		var minSize = 50.0;
-		var maxSize = 100.0;
-
-		var sunrise = new Date(data.suncycle.rise);
-		var sunset =  new Date(data.suncycle.set);
-		var currentTime = new Date();
-
-		var currentUsage = sunrise < currentTime ? totalWatts:0;
+		
 
 
-		$('.onoff .off .time').html(sunrise);
-		$('.onoff .on .time').html(sunset);
-		$('.status .value').html(currentUsage + " kW");
-
-
-		$.each(data.lights, function(i, item)
+		$.each(data, function(i, item)
 		{
-			var opacity = (item.effect - minWatts)/maxWatts;
+			var opacity = 0.3;//var opacity = (item.effect - minWatts)/maxWatts;
 			var startRatio = (1.0 - opacity);
 			var endRatio = opacity;
+
+			var minColorRed = 255.0;
+			var minColorGreen = 255.0;
+			var minColorBlue = 0.0;
+
+			var maxColorRed = 255.0;
+			var maxColorGreen = 0.0;
+			var maxColorBlue = 0.0;
+
+			var minSize = 50.0;
+			var maxSize = 100.0;
 
 			var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
 			var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;

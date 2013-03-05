@@ -28,11 +28,11 @@ var DB_CONN = {
 
 var db = mongojs(DB_CONN.url, DB_CONN.collections);
 
-//URL to GeoServer. WARNING: This is stil temporary and has to be updated.
+//URL to GeoServer. WARNING: This adress is temporary.
 //http://194.116.110.159:8280/geoserver/Belysning/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Belysning:Karlshamn_belysning_armaturer_SWEREF_point&maxFeatures=50&outputFormat=json
 
 //Lampposts
-var POI_NUM = 1000;
+var POI_NUM = 10000;
 var POI_HOST = '194.116.110.159';
 var POI_PORT = 8280;
 var POI_PATH = '/geoserver/Belysning/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Belysning:Karlshamn_belysning_armaturer_SWEREF_point&maxFeatures='+POI_NUM+'&outputFormat=json';
@@ -41,6 +41,7 @@ var POI_PATH = '/geoserver/Belysning/ows?service=WFS&version=1.0.0&request=GetFe
 var SUNSET_HOST = 'api.yr.no';
 var SUNSET_PATH = '/weatherapi/sunrise/1.0/?lat='+USER_LOCATION.lat+';lon='+USER_LOCATION.lon+';date='+USER_LOCATION.date+''
 
+//I dont know what this function does?!
 function onRequest(request, response) {
   response.end();
 }
@@ -49,6 +50,7 @@ app.configure(function(){
     app.use('/public', express.static(__dirname + '/public'));
     app.use('/js', express.static(__dirname + '/public/js'));
     app.use('/css', express.static(__dirname + '/public/css'));
+    app.use('/fonts', express.static(__dirname + '/public/fonts'));
 });
 
 app.all('/*', function(req, res, next) {
@@ -61,10 +63,6 @@ app.get('/', function(req, res){
     res.send('THA POWER API');
 });
 
-app.get('/alllights', function(req, res){
-    res.send(200, resultset);
-});
-
 app.get('/lights', function(req, res){
     res.send(200, lights);
 });
@@ -74,12 +72,16 @@ app.get('/currentUsage', function(req, res){
 });
 
 app.get('/usageHistory', function(req, res){
-    res.send(400, 'Still in progress');
+    db.log.find(function(err, docs){
+        res.send(200, docs);
+    });
+    
+    
 });
 
 //CRON JOB
 //Every 30 minutes: 0,30 * * * *
-new cronJob('*/2 * * * *', function(){
+new cronJob('0,30 * * * *', function(){
     var time = new Date();
     console.log('--CRON JOB-- '+time);
     usage_results.timestamp = time;

@@ -73,12 +73,12 @@ PowerApp.initialize = function()
 	$.getJSON('http://194.116.110.159:8888/currentUsage', function(data){
 		//console.log(data);
 		var totalWatts = (data.usage.totalwatts / 1000000);
-    var maxWatts = data.usage.max;
-    var minWatts = data.usage.min;
+	    var maxWatts = data.usage.max;
+	    var minWatts = data.usage.min;
 
-    var costUnit = data.cost.unit;
-    var costValue = data.cost.value;
-    var totalCost = costValue*totalWatts;
+	    var costUnit = data.cost.unit;
+	    var costValue = data.cost.value;
+	    var totalCost = costValue*totalWatts;
 
 		var sunrise = new Date(data.suncycle.rise);
 		var sunset =  new Date(data.suncycle.set);
@@ -90,57 +90,58 @@ PowerApp.initialize = function()
 		$('.onoff .off .time').html(sunrise);
 		$('.onoff .on .time').html(sunset);
 		$('.status .value').html(currentUsage + " "+costUnit);
-	});
 
 
-	$.getJSON('http://194.116.110.159:8888/lights', function(data)
-	{
-	    var items = [];
-
-	    // .lightson .day .time
-		// .lightson .night .time
-
-		
-
-
-		$.each(data, function(i, item)
+		$.getJSON('http://194.116.110.159:8888/lights', function(data)
 		{
-			var opacity = 0.3;//var opacity = (item.effect - minWatts)/maxWatts;
-			var startRatio = (1.0 - opacity);
-			var endRatio = opacity;
+		    var items = [];
 
-			var minColorRed = 255.0;
-			var minColorGreen = 255.0;
-			var minColorBlue = 0.0;
+		    // .lightson .day .time
+			// .lightson .night .time
 
-			var maxColorRed = 255.0;
-			var maxColorGreen = 0.0;
-			var maxColorBlue = 0.0;
-
-			var minSize = 50.0;
-			var maxSize = 100.0;
-
-			var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
-			var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;
-			var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
-			var currentSize =  minSize * startRatio + maxSize * endRatio;
-
-			var color = rgb2hex(currentRed, currentGreen, currentBlue);
-
-
-			var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize,
+			$.each(data, function(i, item)
 			{
-		    	color: 'red',
-		    	fillColor: color,
-		    	fillOpacity: 0.45 * opacity,
-		    	stroke: false
+				//var opacity = 0.3;//
+				var opacity = (item.effect - minWatts)/maxWatts;
+				var startRatio = (1.0 - opacity);
+				var endRatio = opacity;
 
-			}).addTo(map);
+				var minColorRed = 255.0;
+				var minColorGreen = 255.0;
+				var minColorBlue = 0.0;
 
-			circle.bindPopup("<b>Lightpole</b></br>Watts: " + item.effect + " watt");
+				var maxColorRed = 255.0;
+				var maxColorGreen = 0.0;
+				var maxColorBlue = 0.0;
 
+				var minSize = 50.0;
+				var maxSize = 100.0;
+
+				var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
+				var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;
+				var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
+				var currentSize =  minSize * startRatio + maxSize * endRatio;
+
+				var color = rgb2hex(currentRed, currentGreen, currentBlue);
+
+
+				var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize,
+				{
+			    	color: 'red',
+			    	fillColor: color,
+			    	fillOpacity: 0.45 * opacity,
+			    	stroke: false
+
+				}).addTo(map);
+
+				circle.bindPopup("<b>Lightpole</b></br>Watts: " + item.effect + " watt");
+
+			});
 		});
 	});
+
+
+	
 };
 
 PowerApp.draw = function(interpolation)

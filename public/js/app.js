@@ -1,68 +1,36 @@
 var PowerApp = {};
-// PowerApp.fps = 15;
 
-// function Rect(entity)
-// {
-//   this.x = Math.floor(Math.random() * (640 - 30));;
-//   this.y = Math.floor(Math.random() * (480 - 30));;
-//   this.velocity = Math.random() > 0.5 ? -1 : 1;
+PowerApp.convertNumberToHexString = function(number) 
+{
+    var chars = new Array(	"0", "1", "2", "3", "4", "5", 
+    						"6", "7", "8", "9", "a", "b", 
+    						"c", "d", "e", "f");
 
-// };
-
-// Rect.prototype.draw = function(context)
-// {
-//   //context.fillRect(this.x, this.y, 30, 30);
-// };
-
-// Rect.prototype.update = function()
-// {
-//   if (this.y < 0) {
-//     this.velocity = 1;
-//   } else if (this.y > 450) {
-//     this.velocity = -1;
-//   }
-
-//   this.y += this.velocity;
-
-//   //this.Entity.style.left = this.x;
-//   //this.Entity.top = this.y;
-
-//   console.log(this.HTMLElementy);
-// //  this.HTMLElement.style.left = 0;
-
-
-//   console.log('Entity update - Element id')
-// };
-
-function hexstr(number) {
-    var chars = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
     var low = number & 0xf;
     var high = (number >> 4) & 0xf;
     return "" + chars[high] + chars[low];
 }
 
-function rgb2hex(r, g, b) {
-    return "#" + hexstr(r) + hexstr(g) + hexstr(b);
+PowerApp.convertRgbToHex = function(r, g, b) 
+{
+    return "#" + PowerApp.convertNumberToHexString(r) 
+    + PowerApp.convertNumberToHexString(g) 
+    + PowerApp.convertNumberToHexString(b);
 }
+
 
 PowerApp.initialize = function()
 {
-	this.MouseX = 0;
-	this.MouseY = 0;
+	//DEBUG: console.log("PowerApp:Initialize");
 
-	// this.entities = [];
-	console.log("PowerApp:Initialize");
-
-	var items = [];
-
-
-
+	// creds
     var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 		cmUrl = 'http://{s}.tile.cloudmade.com/cb142de991d9407c9def8ba0df56ab80/{styleId}/256/{z}/{x}/{y}.png';
 
-
+	// create a title layer for the map with styleId 999 (midnight map)
 	var midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr});
 
+	// create the map that will be used to visualize the light poles
 	var map = L.map('map', {
 		center: [56.17030,14.86307],
 		zoom: 12,
@@ -70,8 +38,10 @@ PowerApp.initialize = function()
 		scrollWheelZoom: false
 	});
 
-	$.getJSON('http://194.116.110.159:8888/currentUsage', function(data){
-		//console.log(data);
+	// get the usage data from the server, this function also instigates the fetching of light data
+	$.getJSON('http://194.116.110.159:8888/currentUsage', function(data)
+	{
+		//DEBUG: console.log(data);
 		var totalWatts = (data.usage.totalwatts / 1000000);
 	    var maxWatts = data.usage.max;
 	    var minWatts = data.usage.min;
@@ -86,26 +56,18 @@ PowerApp.initialize = function()
 
 		var currentUsage = sunrise < currentTime ? totalCost:0;
 
-
 		$('.onoff .off .time').html(sunrise);
 		$('.onoff .on .time').html(sunset);
 		$('.status .value').html(currentUsage + " "+costUnit);
 
 
+		//  get the light pole data from the server as JSON
 		$.getJSON('http://194.116.110.159:8888/lights', function(data)
 		{
-		    var items = [];
-
-		    // .lightson .day .time
-			// .lightson .night .time
-
-			$.each(data, function(i, item)
+			// Iterate through all data received from the server
+			$.each(data, function(index, light)
 			{
-				//var opacity = 0.3;//
-				var opacity = (item.effect - minWatts)/maxWatts;
-				var startRatio = (1.0 - opacity);
-				var endRatio = opacity;
-
+				// setup the default colors, sizes and opacity
 				var minColorRed = 255.0;
 				var minColorGreen = 255.0;
 				var minColorBlue = 0.0;
@@ -116,131 +78,46 @@ PowerApp.initialize = function()
 
 				var minSize = 50.0;
 				var maxSize = 100.0;
+				var defaultOpacity =  0.45;
 
+				// calculate the power ration, where 0==minWatts and 1==maxWatts 
+				var powerRatio = (light.effect - minWatts)/(maxWatts - minWatts);
+				var startRatio = (1.0 - powerRatio);
+				var endRatio = powerRatio;
+
+				// mix the min and max colors based on the power ratio
 				var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
 				var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;
 				var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
+				
+				// calculate the size in between min and max size based on the power ratio
 				var currentSize =  minSize * startRatio + maxSize * endRatio;
 
-				var color = rgb2hex(currentRed, currentGreen, currentBlue);
+				// convert the calculated current color to HEX-format
+				var color = PowerApp.convertRgbToHex(currentRed, currentGreen, currentBlue);
 
-
-				var circle = L.circle([item.coordinates.x, item.coordinates.y], currentSize,
+				// add a circle to the map at the light coordinates, representing the light pole
+				var circle = L.circle([light.coordinates.x, light.coordinates.y], currentSize,
 				{
 			    	color: 'red',
 			    	fillColor: color,
-			    	fillOpacity: 0.45 * opacity,
+			    	fillOpacity: defaultOpacity * powerRatio,
 			    	stroke: false
 
 				}).addTo(map);
 
-				circle.bindPopup("<b>Lightpole</b></br>Watts: " + item.effect + " watt");
+				// bind a popup to the current light
+				circle.bindPopup("<b>Lightpole</b></br>Watts: " + light.effect + " watt");
 
 			});
 		});
-	});
-
-
-	
+	});	
 };
-
-PowerApp.draw = function(interpolation)
-{
-	console.log('PowerApp:Draw - ' + interpolation);
-
-};
-
-PowerApp.update = function()
-{
-	console.log('PowerApp:Update - ' + this.context + this.MouseX + ',' + this.MouseY);
-	for (var i=0; i < this.entities.length; i++)
-	{
-    	this.entities[i].update();
-	}
-};
-
-PowerApp.addEntity = function(entity)
-{
- 	var rect = new Rect();
- 	rect.HTMLElement = entity;
-
-  	PowerApp.entities.push(rect);
-
- /* $(entity).animate(
-  {
-    opacity: '-=0.25',
-    top: '+=50',
-   // width: ['toggle', 'swing'],
-    //height:['toggle', 'swing']
-  }, 1000, function()
-  {
-    // Animation complete.
-  });
-  */
-}
-
-
-
-PowerApp.run = (function()
-{
-
-	var loops = 0;
-	var skipTicks = 1000 / PowerApp.fps;
-	var maxFrameSkip = 10;
-	var nextGameTick = (new Date).getTime();
-	var lastGameTick;
-
-	return function()
-	{
-		loops = 0;
-
-		while ((new Date).getTime() > nextGameTick)
-		{
-			PowerApp.update();
-		    nextGameTick += skipTicks;
-			loops++;
-		}
-
-	    if (!loops)
-	    {
-	      PowerApp.draw((nextGameTick - (new Date).getTime()) / skipTicks);
-	    }
-	    else
-	    {
-	      PowerApp.draw(0);
-	    }
-	};
-
-})();
-
-PowerApp.parseJSON = function(jsonData)
-{
-	var items = [];
-
-	$.each(data, function(key, val) {
-	items.push('<li id="' + key + '">' + val + '</li>');
-	});
-
-	$('<ul/>', {
-	'class': 'my-new-list',
-	html: items.join('')
-	}).appendTo('body');
-}
 
 $(document).ready(function()
 {
-	console.log("Start");
+	//DEBUG: console.log("Creating the PowerApp");
 
-
-
-     PowerApp.initialize();
-
-	// var onEachFrame = function(cb)
-	// {
-	// 	setInterval(cb, 1000 / PowerApp.fps);
-	// }
-	// window.onEachFrame = onEachFrame;
-
- //    window.onEachFrame(PowerApp.run);
+    PowerApp.initialize();
 });
 

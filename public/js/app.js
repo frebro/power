@@ -59,7 +59,7 @@ PowerApp.initialize = function()
 		$('.onoff .off .time').html(sunrise.getHours()+':'+sunrise.getMinutes());
 		$('.onoff .on .time').html(sunset.getHours()+':'+sunrise.getMinutes());
 		$('.current .power .value').html(Math.round(totalWatts * 1000) + ' kW');
-		$('.current .cost .value').html(Math.round(currentUsage*totalWatts) + ' ' + 'kr per timme');
+		$('.current .cost .value').html('<i class="icon-arrow-right"></i> ' + Math.round(currentUsage*totalWatts) + ' ' + 'kr per timme');
 
 
 		//  get the light pole data from the server as JSON

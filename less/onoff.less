@@ -1,5 +1,6 @@
 
 .onoff {
+  .flipcard();
 
   // On panel
   .on {
@@ -20,48 +21,4 @@
     }
   }
 
-}
-
-// 3D flip
-.onoff {
-  -webkit-perspective: 800;
-
-  .flipcard.flipped {
-    -webkit-transform: rotateY(180deg);
-  }
-
-}
-.flipcard {
-  position: relative;
-  height: 280px;
-
-  -webkit-transform-style: preserve-3d;
-  -webkit-transition: all 400ms ease-in-out;
-
-  .on,
-  .off {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    -webkit-backface-visibility: hidden;
-  }
-
-  // off hidden by default
-  .off {
-    -webkit-transform: rotateY(180deg);
-  }
-
-}
-
-// Fix bug in visibility for absolutely positioned elements
-.flipcard {
-  &.flipped .on .fliptrigger {
-    display: none;
-  }
-  &:not('.flipped').off .fliptrigger {
-    display: none;
-  }
 }

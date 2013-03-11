@@ -72,6 +72,54 @@
       margin-bottom: 0;
     }
   }
+}
+
+// Flipcard
+.flipcard() {
+  -webkit-perspective: 800;
+
+  &.flipped {
+    .inner {
+      -webkit-transform: rotateY(180deg);
+    }
+  }
+
+  .inner {
+    position: relative;
+    height: 280px;
+
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: all 400ms ease-in-out;
+
+    .frontface,
+    .backface {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      -webkit-backface-visibility: hidden;
+    }
+
+    // backface hidden by default
+    .backface {
+      -webkit-transform: rotateY(180deg);
+    }
+
+  }
+
+  // Fix bug in visibility for absolutely positioned elements
+  &.flipped .inner {
+    .on .fliptrigger {
+      display: none;
+    }
+  }
+  &:not('.flipped') .inner {
+    .off .fliptrigger {
+      display: none;
+    }
+  }
 
   .fliptrigger {
     .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{magenta} 50%, @{magenta} 100%)");

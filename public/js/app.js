@@ -58,7 +58,7 @@ PowerApp.initialize = function()
 
 		$('.onoff .off .time').html(sunrise);
 		$('.onoff .on .time').html(sunset);
-		$('.current .cost').html('<i class="icon-money"></i> ' + Math.round(currentUsage) + ' ' + costUnit);
+		$('.current .cost .value').html(Math.round(currentUsage) + ' ' + costUnit);
 
 
 		//  get the light pole data from the server as JSON

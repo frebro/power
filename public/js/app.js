@@ -56,8 +56,8 @@ PowerApp.initialize = function()
 
 		var currentUsage = sunrise < currentTime ? totalCost:0;
 
-		$('.onoff .off .time').html(sunrise);
-		$('.onoff .on .time').html(sunset);
+		$('.onoff .off .time').html(sunrise.getHours()+':'+sunrise.getMinutes());
+		$('.onoff .on .time').html(sunset.getHours()+':'+sunrise.getMinutes());
 		$('.current .power .value').html(Math.round(totalWatts * 1000) + ' kW');
 		$('.current .cost .value').html(Math.round(currentUsage*totalWatts) + ' ' + 'kr per timme');
 

@@ -96,8 +96,17 @@ hgroup {
 .current {
     .panel(@orange, @white);
 
+    .power,
     .cost {
-        .icon-with-label("\f0d6", 4em, 2em, @base3, @base2);
+        margin-bottom: @rhythmUnit;
+        margin-top: @rhythmUnit;
+    }
+
+    .power {
+        .icon-with-label("\f0e7", 200%, 2.25em, @yellow, mix(@yellow, @orange, 80%));
+    }
+    .cost {
+        .icon-with-label("\f0d6", 200%, 1.75em, @base3, @base2);
     }
 }
 

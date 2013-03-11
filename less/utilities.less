@@ -75,7 +75,7 @@
 }
 
 // Flipcard
-.flipcard() {
+.flipcard {
   -webkit-perspective: 800;
 
   &.flipped {
@@ -111,12 +111,12 @@
 
   // Fix bug in visibility for absolutely positioned elements
   &.flipped .inner {
-    .on .fliptrigger {
+    .frontface .fliptrigger {
       display: none;
     }
   }
   &:not('.flipped') .inner {
-    .off .fliptrigger {
+    .backface .fliptrigger {
       display: none;
     }
   }

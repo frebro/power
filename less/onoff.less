@@ -1,89 +1,39 @@
 
 .onoff {
+  @frontfaceBgColor: mix(@blue, @black, 30%);
+  @backfaceBgColor: mix(@yellow, @white, 30%);
 
-  // Panels
-  .on,
-  .off {
-    .symbol {
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      font-size: 36px;
-      text-align: center;
-
-      // Huge icons
-      .icon {
-        display: block;
-        margin: 0 auto;
-
-        font-size: 100px;
-        font-family: FontAwesome;
-        font-weight: normal;
-        font-style: normal;
-        text-decoration: inherit;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      // use icon-lightbulb
-      .icon:before {
-        content: "\f0eb";
-      }
-    }
+  .inner {
+    height: 270px;
   }
 
   // On panel
   .on {
-    .panel(mix(@blue, @black, 30%), @base3);
+    .panel(@frontfaceBgColor, @base3);
+
+    .fliptrigger {
+      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{backfaceBgColor} 50%, @{backfaceBgColor} 100%)");
+      color: fade(@frontfaceBgColor, 80%);
+    }
 
     .symbol {
-      .gradient(~"linear-gradient(top, #ffda4a 0%, #ff7a41 100%)");
+      .icon-with-label("\f0eb", 4em, 2em, @yellow, @orange);
+      text-shadow: fade(@yellow, 80%) 0 0 30px;
     }
   }
 
   // Off panel
   .off {
-    .panel(mix(@yellow, @white, 30%), @base03);
+    .panel(@backfaceBgColor, @base03);
+
+    .fliptrigger {
+      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{frontfaceBgColor} 50%, @{frontfaceBgColor} 100%)");
+      color: fade(@backfaceBgColor, 80%);
+    }
 
     .symbol {
-      .gradient(~"linear-gradient(top, #3f4142 0%, #3f4142333536 100%)");
+      .icon-with-label("\f0eb", 4em, 2em, @base02, @base03);
     }
-  }
-
-}
-
-// 3D flip
-.onoff {
-  -webkit-perspective: 800;
-
-  &:hover,
-  &:active {
-    .flipcard {
-      -webkit-transform: rotateY(180deg);
-    }
-  }
-
-}
-.flipcard {
-  position: relative;
-  height: 280px;
-
-  -webkit-transform-style: preserve-3d;
-  -webkit-transition: all 400ms ease-in-out;
-
-  .on,
-  .off {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    -webkit-backface-visibility: hidden;
-  }
-
-  // off hidden by default
-  .off {
-    -webkit-transform: rotateY(180deg);
   }
 
 }

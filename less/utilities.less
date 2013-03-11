@@ -54,6 +54,12 @@
   padding: @rhythmUnit;
   margin-bottom: @rhythmUnit;
 
+  hr {
+    background-color: fade(@_fg, 20%);
+    border: none;
+    height: 1px;
+  }
+
   .title {
     border-bottom: 1px solid fade(@_fg, 20%);
     color: @_fg;
@@ -66,49 +72,103 @@
       margin-bottom: 0;
     }
   }
+}
 
-  .function {
-    color: rgba(255,255,255,.6);
+// Flipcard
+.flipcard {
+  -webkit-perspective: 800;
 
-    height: 32px;
-    width: 32px;
+  &.flipped {
+    .inner {
+      -webkit-transform: rotateY(180deg);
+    }
+  }
 
-    font-size: 14px;
-    text-decoration: none;
+  .inner {
+    position: relative;
 
-    &.primary {
-      .gradient(~"linear-gradient(45deg, transparent 0%, transparent 50%, #8187ea 50%, #8187ea 100%)");
-      .border-top-right-radius(@baseBorderRadius);
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: all 400ms ease-in-out;
 
+    .frontface,
+    .backface {
       position: absolute;
       top: 0;
       right: 0;
+      bottom: 0;
+      left: 0;
 
-      text-align: right;
-
-      i {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-      }
+      -webkit-backface-visibility: hidden;
     }
 
-    &.secondary {
-      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, #ff76b9 50%, #ff76b9 100%)");
-      .border-bottom-right-radius(@baseBorderRadius);
+    // backface hidden by default
+    .backface {
+      -webkit-transform: rotateY(180deg);
+    }
 
+  }
+
+  // Fix bug in visibility for absolutely positioned elements
+  &.flipped .inner {
+    .frontface .fliptrigger {
+      display: none;
+    }
+  }
+  &:not('.flipped') .inner {
+    .backface .fliptrigger {
+      display: none;
+    }
+  }
+
+  .fliptrigger {
+    .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{magenta} 50%, @{magenta} 100%)");
+    .border-bottom-right-radius(@baseBorderRadius);
+    color: fade(@black, 80%);
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 60px;
+    width: 60px;
+
+    font-size: 26px;
+    text-align: right;
+    text-decoration: none;
+
+    i {
       position: absolute;
-      bottom: 0;
-      right: 0;
+      bottom: 6px;
+      right: 6px;
+    }
+  }
+}
 
-      text-align: right;
-      vertical-align: bottom;
+// Function for generating icons with labels
+// @icon accepts a character code for FontAwesome
+.icon-with-label(@icon: "\f069", @iconsize: 100px, @labelsize: 36px, @color1: #fff, @color2: #ddd) {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-      i {
-        position: absolute;
-        bottom: 3px;
-        right: 3px;
-      }
+  background-color: mix(@color1, @color2, 50%);
+ .gradient(~"linear-gradient(top, @{color1} 0%, @{color2} 100%)");
+
+  font-size: @labelsize;
+  text-align: center;
+
+  .icon {
+    display: block;
+    margin: 0 auto;
+
+    font-size: @iconsize;
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+
+    &:before {
+      content: @icon;
     }
   }
 }

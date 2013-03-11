@@ -34,38 +34,86 @@
             <h1>Power</h1>
         </header>
 
-        <section class="status">
-            <div class="title">
-                <h2>Förbrukning nu</h2>
+        <section class="flipcard stats">
+            <div class="inner">
+                <div class="frontface current">
+                    <div class="fliptrigger">
+                        <i class="icon-arrow-right"></i>
+                    </div>
+                    <div class="title">
+                        <h2>Förbrukning just nu</h2>
+                    </div>
+                    <div class="power">
+                        <i class="icon"></i>
+                        <span class="value">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="cost">
+                        <span class="value">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="backface today">
+                    <div class="fliptrigger">
+                        <i class="icon-arrow-right"></i>
+                    </div>
+                    <div class="title">
+                        <h2>Förbrukning idag</h2>
+                    </div>
+                    <div class="power">
+                        <i class="icon"></i>
+                        <span class="value">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="cost">
+                        <span class="value">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <span class="value"><i class="icon-spinner icon-spin"></i></span>
         </section>
 
-        <section class="main">
+        <section class="map">
             <div class="title">
                 <h2>Tända lampor</h2>
             </div>
-            <div id="map"><i class="icon-spinner icon-spin"></i></div>
+            <div id="map-canvas"><i class="icon-spinner icon-spin"></i></div>
         </section>
 
-        <section class="onoff">
-            <div class="flipcard">
-                <div class="on">
+        <section class="flipcard onoff">
+            <div class="inner">
+                <div class="frontface on">
+                    <div class="fliptrigger">
+                        <i class="icon-arrow-right"></i>
+                    </div>
                     <div class="title">
                         <h2>Idag tänds lamporna</h2>
                     </div>
                     <div class="symbol">
                         <i class="icon"></i>
-                        <span class="time">18:03</span>
+                        <span class="time">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="off">
+                <div class="backface off">
+                    <div class="fliptrigger">
+                        <i class="icon-arrow-right"></i>
+                    </div>
                     <div class="title">
                         <h2>Idag släcks lamporna</h2>
                     </div>
                     <div class="symbol">
                         <i class="icon"></i>
-                        <span class="time">08:14</span>
+                        <span class="time">
+                            <i class="icon-spinner icon-spin"></i>
+                        </span>
                     </div>
                 </div>
             </div>

@@ -73,6 +73,8 @@ textarea {
 
 body {
     padding: @rhythmUnit;
+    margin: 0 auto;
+    max-width: 640px;
 }
 
 // Header styles
@@ -88,27 +90,54 @@ hgroup {
     }
 }
 
+// Application header
 .header {
     padding: @rhythmUnit;
 }
 
-.status {
-    .panel(@orange, @white);
+// Statistics panel
+.stats {
 
-    .value {
-        font-size: 30px;
+    .inner {
+        height: 300px;
+    }
+
+    .power,
+    .cost {
+        margin-bottom: @rhythmUnit;
+        margin-top: @rhythmUnit;
+    }
+    .power {
+        .icon-with-label("\f0e7", 300%, 2.25em, @yellow, mix(@yellow, @orange, 80%));
+    }
+    .cost {
+        font-size: 1.5em;
+    }
+
+    // Current
+    .current {
+        .panel(@orange, @white);
+        .fliptrigger {
+            .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{blue} 50%, @{blue} 100%)");
+        }
+    }
+
+    // Today
+    .today {
+        .panel(@blue, @white);
+        .fliptrigger {
+            .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{orange} 50%, @{orange} 100%)");
+        }
     }
 }
 
-.main {
-    .panel();
+// Map panel
+.map {
+    .panel(@base03, @white);
+    #map-canvas {
+        height: 320px;
+    }
 }
-
-#map {
-    height: 320px;
-}
-
-
 
 
 

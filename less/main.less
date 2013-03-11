@@ -88,26 +88,39 @@ hgroup {
     }
 }
 
+// Application header
 .header {
     padding: @rhythmUnit;
 }
 
-// Current info panel
-.current {
-    .panel(@orange, @white);
-
+// Statistics panel
+.stats {
     .power,
     .cost {
         margin-bottom: @rhythmUnit;
         margin-top: @rhythmUnit;
     }
-
     .power {
         .icon-with-label("\f0e7", 200%, 2.25em, @yellow, mix(@yellow, @orange, 80%));
     }
-
     .cost {
         font-size: 1.5em;
+    }
+
+    // Current
+    .current {
+        .panel(@orange, @white);
+        .fliptrigger {
+            .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{blue} 50%, @{blue} 100%)");
+        }
+    }
+
+    // Today
+    .today {
+        .panel(@blue, @white);
+        .fliptrigger {
+            .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{orange} 50%, @{orange} 100%)");
+        }
     }
 }
 

@@ -31,7 +31,7 @@ PowerApp.initialize = function()
 	var midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr});
 
 	// create the map that will be used to visualize the light poles
-	var map = L.map('map', {
+	var map = L.map('map-canvas', {
 		center: [56.17030,14.86307],
 		zoom: 12,
 		layers: [midnight],

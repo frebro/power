@@ -1,42 +1,13 @@
 
 .onoff {
 
-  // Panels
-  .on,
-  .off {
-    .symbol {
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-
-      font-size: 36px;
-      text-align: center;
-
-      // Huge icons
-      .icon {
-        display: block;
-        margin: 0 auto;
-
-        font-size: 100px;
-        font-family: FontAwesome;
-        font-weight: normal;
-        font-style: normal;
-        text-decoration: inherit;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      // use icon-lightbulb
-      .icon:before {
-        content: "\f0eb";
-      }
-    }
-  }
-
   // On panel
   .on {
     .panel(mix(@blue, @black, 30%), @base3);
 
     .symbol {
-      .gradient(~"linear-gradient(top, #ffda4a 0%, #ff7a41 100%)");
+      .icon-with-label("\f0eb", 4em, 2em, @yellow, @orange);
+      text-shadow: fade(@yellow, 80%) 0 0 30px;
     }
   }
 
@@ -45,7 +16,7 @@
     .panel(mix(@yellow, @white, 30%), @base03);
 
     .symbol {
-      .gradient(~"linear-gradient(top, #3f4142 0%, #3f4142333536 100%)");
+      .icon-with-label("\f0eb", 4em, 2em, @base02, @base03);
     }
   }
 

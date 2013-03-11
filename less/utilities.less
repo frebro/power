@@ -112,3 +112,32 @@
     }
   }
 }
+
+// Function for generating icons with labels
+// @icon accepts a character code for FontAwesome
+.icon-with-label(@icon: "\f069", @iconsize: 100px, @labelsize: 36px, @color1: #fff, @color2: #ddd) {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  background-color: mix(@color1, @color2, 50%);
+ .gradient(~"linear-gradient(top, @{color1} 0%, @{color2} 100%)");
+
+  font-size: @labelsize;
+  text-align: center;
+
+  .icon {
+    display: block;
+    margin: 0 auto;
+
+    font-size: @iconsize;
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+
+    &:before {
+      content: @icon;
+    }
+  }
+}

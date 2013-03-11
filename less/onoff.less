@@ -26,11 +26,8 @@
 .onoff {
   -webkit-perspective: 800;
 
-  &:hover,
-  &:active {
-    .flipcard {
-      -webkit-transform: rotateY(180deg);
-    }
+  .flipcard.flipped {
+    -webkit-transform: rotateY(180deg);
   }
 
 }
@@ -57,4 +54,14 @@
     -webkit-transform: rotateY(180deg);
   }
 
+}
+
+// Fix bug in visibility for absolutely positioned elements
+.flipcard {
+  &.flipped .on .fliptrigger {
+    display: none;
+  }
+  &:not('.flipped').off .fliptrigger {
+    display: none;
+  }
 }

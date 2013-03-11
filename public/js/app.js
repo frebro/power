@@ -120,5 +120,9 @@ $(document).ready(function()
 	//DEBUG: console.log("Creating the PowerApp");
 
     PowerApp.initialize();
+
+    $('.flipcard .fliptrigger').click(event, function() {
+    	$(event.target).closest('.flipcard').toggleClass('flipped');
+    })
 });
 

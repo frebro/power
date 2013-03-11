@@ -73,48 +73,25 @@
     }
   }
 
-  .function {
-    color: rgba(255,255,255,.6);
+  .fliptrigger {
+    .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, @{magenta} 50%, @{magenta} 100%)");
+    .border-bottom-right-radius(@baseBorderRadius);
+    color: fade(@black, 80%);
 
-    height: 32px;
-    width: 32px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 60px;
+    width: 60px;
 
-    font-size: 14px;
+    font-size: 26px;
+    text-align: right;
     text-decoration: none;
 
-    &.primary {
-      .gradient(~"linear-gradient(45deg, transparent 0%, transparent 50%, #8187ea 50%, #8187ea 100%)");
-      .border-top-right-radius(@baseBorderRadius);
-
+    i {
       position: absolute;
-      top: 0;
-      right: 0;
-
-      text-align: right;
-
-      i {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-      }
-    }
-
-    &.secondary {
-      .gradient(~"linear-gradient(135deg, transparent 0%, transparent 50%, #ff76b9 50%, #ff76b9 100%)");
-      .border-bottom-right-radius(@baseBorderRadius);
-
-      position: absolute;
-      bottom: 0;
-      right: 0;
-
-      text-align: right;
-      vertical-align: bottom;
-
-      i {
-        position: absolute;
-        bottom: 3px;
-        right: 3px;
-      }
+      bottom: 6px;
+      right: 6px;
     }
   }
 }

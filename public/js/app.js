@@ -1,9 +1,9 @@
 var PowerApp = {};
 
-PowerApp.convertNumberToHexString = function(number) 
+PowerApp.convertNumberToHexString = function(number)
 {
-    var chars = new Array(	"0", "1", "2", "3", "4", "5", 
-    						"6", "7", "8", "9", "a", "b", 
+    var chars = new Array(	"0", "1", "2", "3", "4", "5",
+    						"6", "7", "8", "9", "a", "b",
     						"c", "d", "e", "f");
 
     var low = number & 0xf;
@@ -11,10 +11,10 @@ PowerApp.convertNumberToHexString = function(number)
     return "" + chars[high] + chars[low];
 }
 
-PowerApp.convertRgbToHex = function(r, g, b) 
+PowerApp.convertRgbToHex = function(r, g, b)
 {
-    return "#" + PowerApp.convertNumberToHexString(r) 
-    + PowerApp.convertNumberToHexString(g) 
+    return "#" + PowerApp.convertNumberToHexString(r)
+    + PowerApp.convertNumberToHexString(g)
     + PowerApp.convertNumberToHexString(b);
 }
 
@@ -43,12 +43,12 @@ PowerApp.initialize = function()
 	{
 		//DEBUG: console.log(data);
 		var totalWatts = (data.usage.totalwatts / 1000000);
-	    var maxWatts = data.usage.max;
-	    var minWatts = data.usage.min;
+    var maxWatts = data.usage.max;
+    var minWatts = data.usage.min;
 
-	    var costUnit = data.cost.unit;
-	    var costValue = data.cost.value;
-	    var totalCost = costValue*totalWatts;
+    var costUnit = data.cost.unit;
+    var costValue = data.cost.value;
+    var totalCost = costValue*totalWatts;
 
 		var sunrise = new Date(data.suncycle.rise);
 		var sunset =  new Date(data.suncycle.set);
@@ -58,7 +58,7 @@ PowerApp.initialize = function()
 
 		$('.onoff .off .time').html(sunrise);
 		$('.onoff .on .time').html(sunset);
-		$('.status .value').html(currentUsage + " "+costUnit);
+		$('.current .cost').html('<i class="icon-money"></i> ' + Math.round(currentUsage) + ' ' + costUnit);
 
 
 		//  get the light pole data from the server as JSON
@@ -80,7 +80,7 @@ PowerApp.initialize = function()
 				var maxSize = 100.0;
 				var defaultOpacity =  0.45;
 
-				// calculate the power ration, where 0==minWatts and 1==maxWatts 
+				// calculate the power ration, where 0==minWatts and 1==maxWatts
 				var powerRatio = (light.effect - minWatts)/(maxWatts - minWatts);
 				var startRatio = (1.0 - powerRatio);
 				var endRatio = powerRatio;
@@ -89,7 +89,7 @@ PowerApp.initialize = function()
 				var currentRed = minColorRed * startRatio + maxColorRed * endRatio;
 				var currentGreen = minColorGreen * startRatio + maxColorGreen * endRatio;
 				var currentBlue = minColorBlue * startRatio + maxColorBlue * endRatio;
-				
+
 				// calculate the size in between min and max size based on the power ratio
 				var currentSize =  minSize * startRatio + maxSize * endRatio;
 
@@ -111,7 +111,7 @@ PowerApp.initialize = function()
 
 			});
 		});
-	});	
+	});
 };
 
 $(document).ready(function()

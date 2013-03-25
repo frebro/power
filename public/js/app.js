@@ -56,12 +56,17 @@ PowerApp.initialize = function()
 
 		var currentUsage = sunrise < currentTime ? totalCost:0;
 
+		//Ruffly calculation of todays cost. No minutes included and just looking at current price
+		var todayCost = Math.round((sunset.getHours()-sunrise.getHours())*costValue*100)/100;
+
+		var todayUsage = Math.round((sunset.getHours()-sunrise.getHours())*currentUsage*100)/100;
+
 		$('.onoff .off .time').html(sunrise.getHours()+':'+sunrise.getMinutes());
 		$('.onoff .on .time').html(sunset.getHours()+':'+sunrise.getMinutes());
 		$('.stats .current .power .value').html(Math.round(totalWatts * 1000) + ' kW');
 		$('.stats .current .cost .value').html('<i class="icon-arrow-right"></i> ' + Math.round(currentUsage*totalWatts) + ' ' + 'kr per timme');
-		$('.stats .today .power .value').html('6472 kW');
-		$('.stats .today .cost .value').html('<i class="icon-arrow-right"></i> 1886 kr totalt');
+		$('.stats .today .power .value').html(todayUsage+' kWh');
+		$('.stats .today .cost .value').html('<i class="icon-arrow-right"></i> '+todayCost+' kr totalt');
 
 
 		//  get the light pole data from the server as JSON

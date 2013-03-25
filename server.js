@@ -6,6 +6,7 @@ var app = express();
 var parseString = require('xml2js').parseString;
 var $ = require('jquery');
 var mongojs = require('mongojs');
+var time = require('time');
 var cronJob = require('cron').CronJob;
 
 //Global Variables
@@ -13,14 +14,26 @@ var resultset = {};
 var lights = [];
 var usage_results = {};
 
+var now = new time.Date();
+now.setTimezone('Europe/Stockholm');
+
+//var now = new Date();
+var nowString;
+
+now.setDate(now.getDate());
+
+nowString = now.getFullYear() + '-' + ('0' + (now.getMonth()+1)).slice(-2) + '-' + ('0' + now.getDate()).slice(-2);
+
+console.log(nowString);
+
 var USER_LOCATION = {
     lat: '56.1706',
     lon: '14.86188',
-    date: '2013-02-28'
+    date: nowString
 };
 
-
 //username:password@localhost/mydb
+//10.40.1.138
 var DB_CONN = {
     url: 'localhost/power',
     collections: ['log']
@@ -81,15 +94,16 @@ app.get('/usageHistory', function(req, res){
 
 //CRON JOB
 //Every 30 minutes: 0,30 * * * *
-new cronJob('0,30 * * * *', function(){
-    var time = new Date();
-    console.log('--CRON JOB-- '+time);
-    usage_results.timestamp = time;
+// */1 * * * *
+new cronJob('0 * * * *', function(){
+    //var now = new Date();
+    console.log('--CRON JOB-- '+now);
+    usage_results.timestamp = now;//new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),  now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
     db.log.insert(usage_results);
     getSunCycle();
     getElectricityCost();
 
-}, null, true, 1);
+}, null, true, 'Europe/Stockholm');
 
 
 
@@ -136,6 +150,7 @@ function getSunCycle() {
             var xml = data;
             parseString(xml, function(err, result){
                 var date = result.astrodata.time[0].$;
+
                 //var sunrise = result.astrodata.time[0].location[0].sun[0].$;
                 usage_results.suncycle = result.astrodata.time[0].location[0].sun[0].$;
                 //console.log(sunrise);
